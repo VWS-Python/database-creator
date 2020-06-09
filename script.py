@@ -9,6 +9,7 @@ driver = webdriver.Safari()
 ten_second_wait = WebDriverWait(driver, 10)
 log_in_url = 'https://developer.vuforia.com/vui/auth/login'
 licenses_url = 'https://developer.vuforia.com/vui/develop/licenses'
+new_free_licenses_url = 'https://developer.vuforia.com/vui/develop/licenses/free/new'
 email_address = os.environ['EMAIL_ADDRESS']
 password = os.environ['PASSWORD']
 driver.get(log_in_url)
@@ -26,5 +27,14 @@ get_development_key_button_element = ten_second_wait.until(
 )
 
 get_development_key_button_element.click()
+
+license_name_input_element = ten_second_wait.until(
+    expected_conditions.presence_of_element_located(
+        (By.ID, 'license-name'),
+    ),
+)
+
+license_name = 'foo'
+license_name_input_element.send_keys(license_name)
 import pdb; pdb.set_trace()
 driver.close()
