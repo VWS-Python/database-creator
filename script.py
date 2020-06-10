@@ -53,20 +53,40 @@ def create_license(driver, license_name: str) -> None:
     agree_terms_checkbox_element.submit()
 
 
-def create_database(driver, license_name: str) -> None:
+def create_database(driver, database_name: str, license_name: str) -> None:
     target_manager_url = 'https://developer.vuforia.com/vui/develop/databases'
     driver.get(target_manager_url)
+    ten_second_wait = WebDriverWait(driver, 10)
+
+    add_database_button_element = ten_second_wait.until(
+        expected_conditions.presence_of_element_located(
+            (By.ID, 'add-dialog-btn'),
+        ),
+    )
+    add_database_button_element.click()
+
+    database_name_element = driver.find_element_by_id('database-name')
+    database_name_element.send_keys(database_name)
+
+    cloud_type_radio_element = driver.find_element_by_id('cloud-radio-btn')
+    cloud_type_radio_element.click()
 
 
 def main():
     # TODO this has to be an option
     license_name = 'foo'
+    database_name = 'foodb'
+
     driver = webdriver.Safari()
     email_address = os.environ['EMAIL_ADDRESS']
     password = os.environ['PASSWORD']
     log_in(driver=driver, email_address=email_address, password=password)
     create_license(driver=driver, license_name=license_name)
-    create_database(driver=driver, license_name=license_name)
+    create_database(
+        driver=driver,
+        database_name=database_name,
+        license_name=license_name,
+    )
     import pdb; pdb.set_trace()
     driver.close()
 
