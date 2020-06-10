@@ -36,5 +36,8 @@ license_name_input_element = ten_second_wait.until(
 
 license_name = 'foo'
 license_name_input_element.send_keys(license_name)
+
+agree_terms_checkbox_element = driver.find_element_by_id('agree-terms-checkbox')
+agree_terms_checkbox_element.submit()
 import pdb; pdb.set_trace()
 driver.close()
