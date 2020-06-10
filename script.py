@@ -26,7 +26,7 @@ def log_in(driver, email_address: str, password: str) -> None:
     )
 
 
-def create_license(driver) -> None:
+def create_license(driver, license_name: str) -> None:
     licenses_url = 'https://developer.vuforia.com/vui/develop/licenses'
     driver.get(licenses_url)
 
@@ -46,7 +46,6 @@ def create_license(driver) -> None:
         ),
     )
 
-    license_name = 'foo'
     license_name_input_element.send_keys(license_name)
 
     agree_terms_id = 'agree-terms-checkbox'
@@ -54,17 +53,21 @@ def create_license(driver) -> None:
     agree_terms_checkbox_element.submit()
 
 
-def create_database(driver) -> None:
-    pass
+def create_database(driver, license_name: str) -> None:
+    target_manager_url = 'https://developer.vuforia.com/vui/develop/databases'
+    driver.get(target_manager_url)
 
 
 def main():
+    # TODO this has to be an option
+    license_name = 'foo'
     driver = webdriver.Safari()
     email_address = os.environ['EMAIL_ADDRESS']
     password = os.environ['PASSWORD']
     log_in(driver=driver, email_address=email_address, password=password)
-    create_license(driver=driver)
-    create_database(driver=driver)
+    create_license(driver=driver, license_name=license_name)
+    create_database(driver=driver, license_name=license_name)
+    import pdb; pdb.set_trace()
     driver.close()
 
 
