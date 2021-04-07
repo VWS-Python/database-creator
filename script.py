@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
+import click
 
 
 def log_in(driver, email_address: str, password: str) -> None:
@@ -72,11 +73,10 @@ def create_database(driver, database_name: str, license_name: str) -> None:
     cloud_type_radio_element.click()
 
 
-def main():
-    # TODO this has to be an option
-    license_name = 'foo'
-    database_name = 'foodb'
-
+@click.command()
+@click.option('--license-name')
+@click.option('--database-name')
+def create_selenium_database(database_name: str, license_name: str):
     driver = webdriver.Safari()
     email_address = os.environ['EMAIL_ADDRESS']
     password = os.environ['PASSWORD']
@@ -87,9 +87,9 @@ def main():
         database_name=database_name,
         license_name=license_name,
     )
-    import pdb; pdb.set_trace()
+    breakpoint()
     driver.close()
 
 
 if __name__ == '__main__':
-    main()
+    create_selenium_database()
