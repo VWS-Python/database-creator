@@ -72,24 +72,46 @@ def create_database(driver, database_name: str, license_name: str) -> None:
     cloud_type_radio_element = driver.find_element_by_id('cloud-radio-btn')
     cloud_type_radio_element.click()
 
+@click.group(name='vws-web')
+def vws_web_group():
+    pass
+
+@click.command()
+@click.option('--license-name')
+@click.option('--email-address', envvar='VWS_EMAIL_ADDRESS')
+@click.option('--password', envvar='VWS_PASSWORD')
+def create_vws_license(
+    license_name: str,
+    email_address: str,
+    password: str,
+):
+    driver = webdriver.Safari()
+    log_in(driver=driver, email_address=email_address, password=password)
+    create_license(driver=driver, license_name=license_name)
+    driver.close()
 
 @click.command()
 @click.option('--license-name')
 @click.option('--database-name')
-def create_selenium_database(database_name: str, license_name: str):
+@click.option('--email-address', envvar='VWS_EMAIL_ADDRESS')
+@click.option('--password', envvar='VWS_PASSWORD')
+def create_vws_database(
+    database_name: str,
+    license_name: str,
+    email_address: str,
+    password: str,
+):
     driver = webdriver.Safari()
-    email_address = os.environ['EMAIL_ADDRESS']
-    password = os.environ['PASSWORD']
     log_in(driver=driver, email_address=email_address, password=password)
-    create_license(driver=driver, license_name=license_name)
     create_database(
         driver=driver,
         database_name=database_name,
         license_name=license_name,
     )
-    breakpoint()
     driver.close()
 
+vws_web_group.add_command(create_vws_database)
+vws_web_group.add_command(create_vws_license)
 
 if __name__ == '__main__':
-    create_selenium_database()
+    vws_web_group()
