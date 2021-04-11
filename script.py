@@ -72,9 +72,11 @@ def create_database(driver, database_name: str, license_name: str) -> None:
     cloud_type_radio_element = driver.find_element_by_id('cloud-radio-btn')
     cloud_type_radio_element.click()
 
+
 @click.group(name='vws-web')
 def vws_web_group():
     pass
+
 
 @click.command()
 @click.option('--license-name')
@@ -89,6 +91,7 @@ def create_vws_license(
     log_in(driver=driver, email_address=email_address, password=password)
     create_license(driver=driver, license_name=license_name)
     driver.close()
+
 
 @click.command()
 @click.option('--license-name')
@@ -109,6 +112,7 @@ def create_vws_database(
         license_name=license_name,
     )
     driver.close()
+
 
 vws_web_group.add_command(create_vws_database)
 vws_web_group.add_command(create_vws_license)
